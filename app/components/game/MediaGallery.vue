@@ -1,7 +1,22 @@
 <template>
     <div class="w-full py-8">
+        <!-- Mobile Header with Title and Controls -->
+        <div class="flex md:hidden items-center justify-between mb-4 px-1">
+            <h2 class="text-xl font-bold text-white">Gallery</h2>
+            <div class="flex items-center gap-2">
+                <button @click="prev" :disabled="currentIndex === 0"
+                    class="bg-[#240243] p-2 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3b0b61] transition-colors">
+                    <ChevronLeft class="w-5 h-5" />
+                </button>
+                <button @click="next" :disabled="isAtEnd"
+                    class="bg-[#240243] p-2 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-[#3b0b61] transition-colors">
+                    <ChevronRight class="w-5 h-5" />
+                </button>
+            </div>
+        </div>
+
         <!-- Media Grid / Carousel -->
-        <div class="relative group pr-12"> <!-- Added padding for arrows -->
+        <div class="relative group md:pr-12"> <!-- Adjusted padding for desktop only -->
 
             <!-- Carousel Container -->
             <div class="overflow-hidden rounded-2xl">
@@ -9,7 +24,7 @@
                     :style="{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }">
 
                     <div v-for="(item, index) in allMedia" :key="item.id"
-                        class="flex-shrink-0 w-1/3 px-2 aspect-video relative cursor-pointer group/item">
+                        class="flex-shrink-0 w-full md:w-1/3 px-2 aspect-video relative cursor-pointer group/item">
 
                         <div
                             class="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 group-hover/item:border-[#C29BEF] transition-colors">
@@ -35,7 +50,7 @@
 
             <!-- Navigation Button (Next) -->
             <button @click="next" :disabled="isAtEnd"
-                class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-[#C29BEF] text-[#1F1F1F] p-3 rounded-xl hover:bg-[#A78BFA] transition-all shadow-lg opacity-100 disabled:opacity-0 disabled:cursor-not-allowed translate-x-0">
+                class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-[#C29BEF] text-[#1F1F1F] p-3 rounded-xl hover:bg-[#A78BFA] transition-all shadow-lg opacity-100 disabled:opacity-0 disabled:cursor-not-allowed translate-x-0">
                 <ChevronRight class="w-6 h-6" />
             </button>
         </div>
@@ -51,7 +66,8 @@
 </template>
 
 <script setup lang="ts">
-import { Play, ChevronRight } from 'lucide-vue-next';
+import { Play, ChevronRight, ChevronLeft } from 'lucide-vue-next';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps<{
     gameId: number;
@@ -68,7 +84,26 @@ interface MediaItem {
     name?: string;
 }
 
-const itemsPerView = 3;
+
+const itemsPerView = ref(3); // Default to desktop
+
+const updateItemsPerView = () => {
+    if (typeof window !== 'undefined') {
+        itemsPerView.value = window.innerWidth < 768 ? 1 : 3;
+    }
+};
+
+onMounted(() => {
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+});
+
+onUnmounted(() => {
+    if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', updateItemsPerView);
+    }
+});
+
 const currentIndex = ref(0);
 
 // Use async data fetching to handle the promises correctly
@@ -107,22 +142,18 @@ const allMedia = computed(() => {
 });
 
 const isAtEnd = computed(() => {
-    return currentIndex.value >= allMedia.value.length - itemsPerView;
+    return currentIndex.value >= allMedia.value.length - itemsPerView.value;
 });
 
 const currentSlide = computed(() => {
-    // Current slide index based on chunks of itemsPerView
-    // Simple logic: we are moving one by one via index, but dots represent pages?
-    // Let's implement dots as pages for simplicity.
-    return Math.floor(currentIndex.value / itemsPerView);
+    return Math.floor(currentIndex.value / itemsPerView.value);
 });
 
 const next = () => {
-    if (currentIndex.value + itemsPerView < allMedia.value.length) {
-        currentIndex.value += 1; // Move one item at a time for smooth scrolling
+    if (currentIndex.value + itemsPerView.value < allMedia.value.length) {
+        currentIndex.value += 1;
     } else {
-        currentIndex.value = 0; // Loop back? Optional. Let's just stop at end or loop. Instructions didn't specify. Assuming typical carousel loop or stop.
-        // Let's stop at end based on the disabled button, but if user clicks.. wait, disabled logic handles it.
+        currentIndex.value = 0;
     }
 };
 
@@ -133,7 +164,7 @@ const prev = () => {
 };
 
 const goToSlide = (slideIndex: number) => {
-    currentIndex.value = slideIndex * itemsPerView;
+    currentIndex.value = slideIndex * itemsPerView.value;
 };
 
 </script>

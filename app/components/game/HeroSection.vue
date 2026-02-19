@@ -1,5 +1,5 @@
 <template>
-    <div class="relative w-full h-[600px] md:h-[700px]">
+    <div class="relative w-full h-screen">
         <!-- Backdrop Image -->
         <div class="absolute inset-0">
             <img :src="game.background_image" :alt="game.name" class="w-full h-full object-cover opacity-60" />
@@ -10,7 +10,7 @@
         <!-- Content Container -->
         <div class="relative h-full container mx-auto px-6 py-10 flex flex-col justify-end pb-20">
             <!-- Play Button (Centered in available space) -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div class="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none">
                 <button
                     class="pointer-events-auto bg-white/20 backdrop-blur-md p-6 rounded-full hover:bg-white/30 transition-all hover:scale-110 group">
                     <Play class="w-12 h-12 text-white fill-white group-hover:text-purple-400 transition-colors" />
@@ -20,8 +20,9 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end z-10">
                 <!-- Left Column: Poster + Main Info -->
                 <div class="col-span-1 md:col-span-7 lg:col-span-7 flex flex-col gap-6 justify-end">
+                    <!-- Poster (Visible on all screens) -->
                     <div
-                        class="hidden md:block rounded-xl overflow-hidden shadow-2xl border border-white/10 w-full max-w-[200px] aspect-[2/3]">
+                        class="rounded-xl overflow-hidden shadow-2xl border border-white/10 w-full max-w-[200px] aspect-[2/3]">
                         <img :src="game.background_image" :alt="game.name" class="w-full h-full object-cover" />
                     </div>
 
@@ -58,15 +59,16 @@
                 <div class="col-span-1 md:col-span-5 lg:col-span-5 flex flex-col items-start lg:items-end gap-6 w-full">
 
                     <!-- Platforms & Date -->
-                    <div class="flex items-center gap-4 px-4 py-2 rounded-xl">
+                    <div class="flex flex-row-reverse md:flex-row items-center gap-4 px-4 py-2 rounded-xl">
                         <!-- Platform Icons -->
-                        <div class="flex items-center gap-2 border-r border-white/20 pr-4">
+                        <div
+                            class="flex items-center gap-2 border-l md:border-l-0 md:border-r border-white/20 pl-4 md:pl-0 md:pr-4">
                             <img src="/icons/windows-10.svg" alt="Windows" class="w-10 h-10 opacity-100" />
                             <img src="/icons/play-station.svg" alt="PlayStation" class="w-10 h-10 opacity-100" />
                         </div>
 
                         <!-- Release Date -->
-                        <span class="text-sm font-medium bg-white text-black px-4 py-2 rounded-lg">
+                        <span class="text-sm font-medium bg-white text-black px-4 py-2 rounded-lg whitespace-nowrap">
                             {{ formatDate(game.released) }}
                         </span>
                     </div>

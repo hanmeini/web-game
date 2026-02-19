@@ -17,39 +17,45 @@
         </div>
 
         <!-- Carousel -->
-        <div class="relative overflow-hidden w-full -mx-2 p-2">
+        <div class="relative overflow-hidden w-full">
             <div class="flex transition-transform duration-500 ease-in-out w-full"
-                :style="{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }">
+                :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
 
-                <div v-for="category in categories" :key="category.slug"
-                    class="flex-shrink-0 px-2 transition-all duration-300" :class="[
-                        itemsPerPage === 1 ? 'w-full' :
-                            itemsPerPage === 2 ? 'w-1/2' : 'w-1/3'
-                    ]">
-                    <div @click="$emit('select', category.slug)"
-                        class="group relative h-[220px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-[#C29BEF] transition-all duration-300 hover:shadow-lg hover:shadow-[#C29BEF]/20">
+                <!-- Iterate over chunks (pages) -->
+                <div v-for="(page, pageIndex) in chunkedCategories" :key="pageIndex"
+                    class="w-full flex-shrink-0 flex flex-col md:flex-row gap-4 px-1">
 
-                        <!-- Background Image -->
-                        <img :src="category.image" :alt="category.name"
-                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <!-- Items in the page -->
+                    <div v-for="category in page" :key="category.slug" class="w-full md:w-1/3 flex-shrink-0">
 
-                        <!-- Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                        <div @click="$emit('select', category.slug)"
+                            class="group relative h-[120px] md:h-[220px] rounded-2xl overflow-hidden cursor-pointer border border-white/5 hover:border-[#C29BEF] transition-all duration-300 hover:shadow-lg hover:shadow-[#C29BEF]/20">
 
-                        <!-- Content -->
-                        <div class="absolute bottom-0 left-0 w-full p-5">
-                            <h3 class="text-xl font-bold text-white group-hover:text-[#C29BEF] transition-colors">{{ category.name }}</h3>
+                            <!-- Background Image -->
+                            <img :src="category.image" :alt="category.name"
+                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+
+                            <!-- Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+                            </div>
+
+                            <!-- Content -->
+                            <div class="absolute bottom-0 left-0 w-full p-5">
+                                <h3 class="text-xl font-bold text-white group-hover:text-[#C29BEF] transition-colors">{{
+                                    category.name }}</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
         <!-- Pagination Indicators -->
         <div class="flex justify-center gap-2 mt-6">
-            <button v-for="page in totalPages" :key="page" @click="goToPage(page - 1)"
+            <button v-for="(_, index) in chunkedCategories" :key="index" @click="goToPage(index)"
                 class="h-1 rounded-full transition-all duration-300"
-                :class="isPageActive(page - 1) ? 'w-20 bg-white' : 'w-10 bg-white/20 hover:bg-white/40'">
+                :class="currentIndex === index ? 'w-20 bg-white' : 'w-10 bg-white/20 hover:bg-white/40'">
             </button>
         </div>
     </div>
@@ -69,7 +75,7 @@ const { getGenres } = useRawg();
 // State
 const categories = ref<{ id: number; name: string; slug: string; image: string }[]>([]);
 const currentIndex = ref(0);
-const itemsPerPage = ref(3);
+const itemsPerPage = ref(3); // 3 items per slide (vertical on mobile, horizontal on desktop)
 
 // Fetch Genres
 onMounted(async () => {
@@ -96,14 +102,23 @@ onUnmounted(() => {
 });
 
 const updateItemsPerPage = () => {
-    if (window.innerWidth < 640) itemsPerPage.value = 1;
-    else if (window.innerWidth < 1024) itemsPerPage.value = 2;
-    // else if (window.innerWidth < 1280) itemsPerPage.value = 3;
-    else itemsPerPage.value = 3; // Default to 3 for desktop as requested
+    // We always want 3 items per slide essentially, but layout changes.
+    // If we wanted 2 columns on tablet, we'd change this.
+    // For now, let's keep it 3 to match mobile 3-stack and desktop 3-col.
+    if (window.innerWidth < 1024) itemsPerPage.value = 3;
+    else itemsPerPage.value = 3;
 };
 
-const maxIndex = computed(() => Math.max(0, categories.value.length - itemsPerPage.value));
-const totalPages = computed(() => Math.ceil(categories.value.length / itemsPerPage.value));
+// Start chunking logic
+const chunkedCategories = computed(() => {
+    const chunks = [];
+    for (let i = 0; i < categories.value.length; i += itemsPerPage.value) {
+        chunks.push(categories.value.slice(i, i + itemsPerPage.value));
+    }
+    return chunks;
+});
+
+const maxIndex = computed(() => Math.max(0, chunkedCategories.value.length - 1));
 
 const next = () => {
     if (currentIndex.value < maxIndex.value) {
@@ -122,12 +137,6 @@ const prev = () => {
 };
 
 const goToPage = (pageIndex: number) => {
-    currentIndex.value = pageIndex * itemsPerPage.value;
-    if (currentIndex.value > maxIndex.value) currentIndex.value = maxIndex.value;
-};
-
-const isPageActive = (pageIndex: number) => {
-    const pageStart = pageIndex * itemsPerPage.value;
-    return currentIndex.value >= pageStart && currentIndex.value < pageStart + itemsPerPage.value;
+    currentIndex.value = pageIndex;
 };
 </script>

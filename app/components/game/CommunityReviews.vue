@@ -87,7 +87,7 @@
         </div>
 
         <!-- Right Column: Sidebar -->
-        <div class="md:col-span-4 space-y-6">
+        <div class="md:col-span-4 space-y-6 order-first md:order-none">
             <!-- Add Review -->
             <div class="bg-[#15171E] p-6 rounded-2xl border border-white/5">
                 <h3 class="font-bold text-lg text-white mb-2">Add Your Review</h3>

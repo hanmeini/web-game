@@ -48,7 +48,7 @@
 
             <!-- Right: Display Options -->
             <div class="flex items-center gap-4">
-                <span class="text-gray-400 text-sm hidden sm:block">Display Options :</span>
+                <span class="text-gray-400 text-sm">Display Options :</span>
                 <div class="flex gap-2 bg-[#C29BEF] p-1 rounded-xl">
                     <button @click="viewMode = 'dynamic'" class="p-2 rounded-lg transition-all"
                         :class="viewMode === 'dynamic' ? 'bg-[#240243] shadow-sm' : 'hover:bg-[#240243]/10'">

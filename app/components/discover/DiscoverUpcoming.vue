@@ -10,14 +10,14 @@
             <!-- Carousel Content -->
             <div class="relative group" @mouseenter="stopAutoplay" @mouseleave="startAutoplay">
 
-                <div class="relative min-h-[500px] md:min-h-[400px]">
+                <div class="relative min-h-[1000px] md:min-h-[400px]">
                     <transition-group name="fade" tag="div">
                         <div v-for="(game, index) in games" :key="game.id" v-show="currentIndex === index"
                             class="absolute inset-0 w-full flex flex-col md:flex-row items-center gap-8 md:gap-12">
 
                             <!-- Left: Image (Rounded Card) -->
                             <div
-                                class="w-full md:w-[55%] aspect-video md:aspect-auto md:h-[400px] rounded-3xl overflow-hidden shadow-2xl shadow-black/30 bg-[#15171E]">
+                                class="w-full md:w-[55%] h-[500px] md:h-[400px] rounded-3xl overflow-hidden shadow-2xl shadow-black/30 bg-[#15171E]">
                                 <img :src="game.background_image || '/images/placeholder-game.jpg'" :alt="game.name"
                                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                             </div>
@@ -76,12 +76,12 @@
 
                 <!-- Navigation Controls -->
                 <button @click="prevSlide"
-                    class="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 p-3 rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-all">
+                    class="hidden md:block absolute top-1/2 -translate-y-1/2 -left-4 md:-left-12 p-3 rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-all">
                     <ChevronLeft class="w-8 h-8" />
                 </button>
 
                 <button @click="nextSlide"
-                    class="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 p-3 rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-all">
+                    class="hidden md:block absolute top-1/2 -translate-y-1/2 -right-4 md:-right-12 p-3 rounded-full text-white/50 hover:text-white hover:bg-white/10 transition-all">
                     <ChevronRight class="w-8 h-8" />
                 </button>
 
@@ -89,8 +89,8 @@
                 <div
                     class="flex justify-center gap-2 mt-8 md:mt-0 md:absolute md:bottom-0 md:left-1/2 md:-translate-x-1/2 md:translate-y-12">
                     <button v-for="(g, index) in games" :key="g.id" @click="currentIndex = index"
-                        class="h-1.5 rounded-full transition-all duration-300"
-                        :class="[currentIndex === index ? 'w-8 bg-[#C29BEF]' : 'w-2 bg-white/20 hover:bg-white/40']">
+                        class="h-1 rounded-full transition-all duration-300"
+                        :class="[currentIndex === index ? 'w-12 bg-white' : 'w-8 bg-white/20 hover:bg-white/40']">
                     </button>
                 </div>
 
@@ -133,7 +133,7 @@ const prevSlide = () => {
 const startAutoplay = () => {
     stopAutoplay();
     if (games.value.length > 1) {
-        autoplayInterval = setInterval(nextSlide, 5000);
+        autoplayInterval = setInterval(nextSlide, 4000);
     }
 };
 

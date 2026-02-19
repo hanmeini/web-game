@@ -20,7 +20,7 @@
             </div>
 
             <!-- Search & Filter Bar -->
-            <div class="w-full max-w-2xl flex flex-col md:flex-row gap-4">
+            <div class="w-full max-w-2xl flex flex-row gap-3">
                 <!-- Search Input -->
                 <div class="relative flex-1 group/search">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -30,14 +30,14 @@
                     <input :value="searchQuery"
                         @input="$emit('update:searchQuery', ($event.target as HTMLInputElement).value)"
                         @keyup.enter="$emit('search')" type="text" placeholder="Search by title, genre, or developer"
-                        class="block w-full pl-11 pr-4 py-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-[#C29BEF]/50 focus:ring-1 focus:ring-[#C29BEF]/50 transition-all font-medium" />
+                        class="block w-full pl-11 pr-4 py-3 md:py-4 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-[#C29BEF]/50 focus:ring-1 focus:ring-[#C29BEF]/50 transition-all font-medium" />
                 </div>
 
                 <!-- Filter Button -->
                 <button @click="$emit('toggleFilters')"
-                    class="px-8 py-4 bg-[#C29BEF] hover:bg-[#A78BFA] text-[#293047] rounded-xl font-bold transition-all flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-[#C29BEF]/20 whitespace-nowrap">
-                    <Filter class="w-5 h-5" />
-                    Filter by
+                    class="p-3 md:px-8 md:py-4 bg-[#C29BEF] hover:bg-[#A78BFA] text-[#293047] rounded-xl font-bold transition-all flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-[#C29BEF]/20 whitespace-nowrap aspect-square md:aspect-auto">
+                    <Filter class="w-6 h-6 md:w-5 md:h-5" />
+                    <span class="hidden md:inline">Filter by</span>
                 </button>
             </div>
         </div>

@@ -2,7 +2,6 @@
     <div class="space-y-12 bg-[#1F1F1F] p-6 md:p-10">
         <!-- Header - Featured Section -->
         <section v-if="featuredGames.length > 0">
-            <h2 class="text-xl font-bold text-white mb-4">Featured & Recommended</h2>
             <FeaturedCarousel :featuredGames="featuredGames" />
         </section>
 
