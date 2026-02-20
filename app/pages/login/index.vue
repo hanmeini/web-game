@@ -73,6 +73,11 @@ import AuthLayout from '~/components/layout/AuthLayout.vue';
 import BaseInput from '~/components/common/BaseInput.vue';
 import BaseButton from '~/components/common/BaseButton.vue';
 
+useSeoMeta({
+    title: 'Login',
+    description: 'Log in to your GameVault account to access your personalized game collection and reviews.',
+})
+
 definePageMeta({
     layout: false
 });

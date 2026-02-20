@@ -33,6 +33,13 @@ import TrendingCarousel from '~/components/home/TrendingCarousel.vue';
 import LatestReviews from '~/components/home/LatestReviews.vue';
 import OtherGames from '~/components/home/OtherGames.vue';
 
+useSeoMeta({
+    title: 'Home',
+    description: 'Welcome to GameVault! Discover trending games, check out upcoming releases, and find your next favorite adventure.',
+    ogTitle: 'Home - GameVault',
+    ogDescription: 'Welcome to GameVault! Discover trending games, check out upcoming releases, and find your next favorite adventure.',
+})
+
 const { getFeaturedGames, getGames } = useRawg();
 const { data: featuredGamesData } = await getFeaturedGames(5);
 const featuredGames = computed(() => featuredGamesData.value?.results || []);

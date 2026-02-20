@@ -39,6 +39,11 @@
 import AuthLayout from '~/components/layout/AuthLayout.vue';
 import BaseButton from '~/components/common/BaseButton.vue';
 
+useSeoMeta({
+    title: 'Verify Email',
+    description: 'Verify your email address to complete your GameVault registration.',
+})
+
 definePageMeta({
     layout: false
 });

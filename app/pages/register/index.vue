@@ -76,6 +76,11 @@ import AuthLayout from '~/components/layout/AuthLayout.vue';
 import BaseInput from '~/components/common/BaseInput.vue';
 import BaseButton from '~/components/common/BaseButton.vue';
 
+useSeoMeta({
+    title: 'Register',
+    description: 'Create a new GameVault account to start discovering and tracking your favorite games.',
+})
+
 definePageMeta({
     layout: false
 });

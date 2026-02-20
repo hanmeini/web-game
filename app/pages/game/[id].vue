@@ -43,4 +43,13 @@ const { data: game, error } = await getGameDetails(parseInt(id));
 if (error.value) {
     console.error('Error fetching game details:', error.value);
 }
+
+useSeoMeta({
+    title: () => game.value?.name || 'Game Details',
+    description: () => game.value?.description_raw?.substring(0, 160) || 'Detailed game information, reviews, and media on GameVault.',
+    ogTitle: () => game.value ? `${game.value.name} - GameVault` : 'Game Details',
+    ogDescription: () => game.value?.description_raw?.substring(0, 160) || 'Detailed game information, reviews, and media on GameVault.',
+    ogImage: () => game.value?.background_image,
+    twitterCard: 'summary_large_image',
+})
 </script>

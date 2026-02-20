@@ -41,6 +41,13 @@ import DiscoverUpcoming from '~/components/discover/DiscoverUpcoming.vue';
 import { useRawg } from '~/composables/useRawg';
 import type { Game } from '~/types/rawg';
 
+useSeoMeta({
+    title: 'Discover Games',
+    description: 'Explore our vast collection of games. Filter by genre, platform, and more to find your perfect match.',
+    ogTitle: 'Discover Games - GameVault',
+    ogDescription: 'Explore our vast collection of games. Filter by genre, platform, and more to find your perfect match.',
+})
+
 const { getDiscoverGames, getPlatforms } = useRawg();
 
 // State
