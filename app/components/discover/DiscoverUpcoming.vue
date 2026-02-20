@@ -66,7 +66,7 @@
 
                                 <button
                                     class="w-full md:w-auto self-start flex items-center justify-center gap-2 px-8 py-3 bg-[#C29BEF] hover:bg-[#A78BFA] text-[#240243] rounded-xl font-bold transition-all shadow-lg hover:shadow-[#C29BEF]/25 hover:-translate-y-0.5">
-                                    <img src="/icons/play.svg" class="w-5 h-5 fill-current" />
+                                    <Play class="w-5 h-5" />
                                     Watch Trailer
                                 </button>
                             </div>
